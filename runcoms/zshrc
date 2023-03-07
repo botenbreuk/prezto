@@ -10,4 +10,58 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+source "$HOME/.secrets.env"
+source "$HOME/.gemini.env"
+
 # Customize to your needs...
+
+POSTGRES_VERSION="postgresql@17"
+POSTGRES_HOME="/opt/homebrew/opt/$POSTGRES_VERSION"
+POSTGRES_DB_DIR="/opt/homebrew/var/$POSTGRES_VERSION"
+
+alias projects="cd ~/Documents/projects"
+alias gamend="git add .;git commit --amend --no-edit;git push -f"
+alias npmri="rm -rf node_modules package-lock.json && npm i"
+alias ll="ls -la | grep \"^d\" && ls -la | grep -v \"^d\""
+alias mvncb="mvn clean verify -DskipTests"
+alias reloadzsh="source ~/.zshrc"
+alias glic="git config --local core.ignorecase false"
+alias kill-8080="lsof -n -i4TCP:8080 | awk '{print$2}' | tail -1 | xargs kill -9"
+
+alias start-postgres="pg_ctl -D $POSTGRES_HOME start"
+alias start-postgres-with-log="$POSTGRES_HOME/bin/postgres -D $POSTGRES_DB_DIR -c log_statement=all"
+alias stop-postgres="pg_ctl -D $POSTGRES_DB_DIR stop"
+alias clear-postgres="dropdb postgres --force; createdb postgres; psql postgres -c 'grant all privileges on database postgres to postgres;';"
+alias ppsql="psql postgres"
+alias load-database="psql -U postgres -f "
+alias mvn-dep-check="mvn dependency-check:check -DossIndexUsername=$MVN_OSS_USER -DossIndexPassword=$MVN_OSS_API_KEY -DnvdApiKey=$MVN_NVD_API_KEY"
+
+# PATH settings
+
+# JAVA
+export JAVA_HOME=$(/usr/libexec/java_home)
+# Change link with 'ln -s /opt/homebrew/Cellar/maven/<VERSION>/libexec ~/Development/maven'
+export M2_HOME=$HOME/Development/maven
+
+export PATH=/opt/homebrew/bin:$PATH
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export PATH="$HOME/.jenv/bin:/bin:$PATH"
+eval "$(jenv init -)"
+
+# export PATH="/usr/local/opt/libressl/bin:$PATH"
+# export PATH="/usr/local/opt/curl/bin:$PATH"
+
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+export PATH="$POSTGRES_HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+# Claude
+export CLAUDE_CODE_EFFORT_LEVEL=max
+export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
