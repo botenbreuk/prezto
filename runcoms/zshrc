@@ -11,3 +11,40 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+
+alias projects="cd ~/Documents/projects"
+alias gamend="git add .;git commit --amend --no-edit;git push -f"
+alias npmri="rm -rf node_modules package-lock.json && npm i"
+alias ll="ls -la | grep \"^d\" && ls -la | grep -v \"^d\""
+alias mvncb="mvn clean verify -DskipTests"
+alias reloadzsh="source ~/.zshrc"
+alias glic="git config --local core.ignorecase false"
+alias kill-8080="lsof -n -i4TCP:8080 | awk '{print$2}' | tail -1 | xargs kill -9"
+
+alias start-postgres="pg_ctl -D /opt/homebrew/var/postgres start"
+alias start-postgres-with-log="/opt/homebrew/opt/postgresql/bin/postgres -D /opt/homebrew/var/postgres -c log_statement=all"
+alias stop-postgres="pg_ctl -D /opt/homebrew/var/postgres stop"
+alias clear-postgres="dropdb postgres --force; createdb postgres; psql postgres -c 'grant all privileges on database postgres to postgres;';"
+alias ppsql="psql postgres"
+alias load-database="psql -U postgres -f "
+
+# PATH settings
+
+# JAVA
+export JAVA_HOME=$(/usr/libexec/java_home)
+# Change link with 'ln -s /opt/homebrew/Cellar/maven/<VERSION>/libexec ~/Development/maven'
+export M2_HOME=$HOME/Development/maven
+
+export PATH=/opt/homebrew/bin:$PATH
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+export PATH="$HOME/.jenv/bin:/bin:$PATH"
+eval "$(jenv init -)"
+
+# export PATH="/usr/local/opt/libressl/bin:$PATH"
+# export PATH="/usr/local/opt/curl/bin:$PATH"
+
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
