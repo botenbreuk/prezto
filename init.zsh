@@ -31,7 +31,7 @@ function zprezto-update {
     }
     cd -q -- "${ZPREZTODIR}" || return 7
     local orig_branch="$(git symbolic-ref HEAD 2> /dev/null | cut -d '/' -f 3)"
-    if [[ "$orig_branch" == "master" ]]; then
+    if [[ "$orig_branch" == "own-config" ]]; then
       git fetch || return "$?"
       local UPSTREAM=$(git rev-parse '@{u}')
       local LOCAL=$(git rev-parse HEAD)
@@ -52,14 +52,14 @@ function zprezto-update {
           return 1
         fi
       elif [[ $REMOTE == $BASE ]]; then
-        cannot-fast-forward "Commits in master that aren't in upstream."
+        cannot-fast-forward "Commits in own-config that aren't in upstream."
         return 1
       else
         cannot-fast-forward "Upstream and local have diverged."
         return 1
       fi
     else
-      printf "zprezto install at '%s' is not on the master branch " "${ZPREZTODIR}"
+      printf "zprezto install at '%s' is not on the own-config branch " "${ZPREZTODIR}"
       printf "(you're on '%s')\nUnable to automatically update.\n" "${orig_branch}"
       return 1
     fi
